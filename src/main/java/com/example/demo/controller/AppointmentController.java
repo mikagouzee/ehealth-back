@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,21 @@ public class AppointmentController {
 		@Autowired
 		private AppointmentRepository _appointmentRepository;
 		
+		
+		@PostMapping("/confirm")
+		public ResponseEntity<Appointment> ConfirmAppointment(@RequestBody AppointmentConfirmationRequest request) {
+			Appointment toConfirm = _appointmentRepository.findById(request.appointmentId).get();
+			if(toConfirm != null){
+				toConfirm.isConfirmed = true;
+				var confirmed = _appointmentRepository.save(toConfirm);
+				return ResponseEntity.ok(confirmed);
+			}
+			else {
+				return ResponseEntity.status(500).build();
+			}
+			
+		}
+		
 		@PostMapping("/book")
 		public String BookAppointment(@RequestBody AppointmentRequest request) {
 			Appointment toCreate = new Appointment(request);
@@ -58,21 +74,10 @@ public class AppointmentController {
 			
 		}
 		
-		@PostMapping("/confirm")
-	    public ResponseEntity<?> ConfirmAppointment(@RequestBody AppointmentConfirmationRequest request) {
-	        Optional<Appointment> optionalAppointment = _appointmentRepository.findById(request.appointmentId);
 
-	        if (optionalAppointment.isPresent()) {
-	            Appointment toConfirm = optionalAppointment.get();
-	            toConfirm.isConfirmed = true;
-	            Appointment confirmed = _appointmentRepository.save(toConfirm);
-	            return ResponseEntity.ok(confirmed);
-	        } else {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No appointment found.");
-	        }
-	    }
 		
 		@PostMapping("/bill")
+		// This is the appointment billing method 
 		public String BillAppointment(int appointmentId) {
 			Appointment toBill = _appointmentRepository.findById(appointmentId).get();
 			if(toBill!=null) {
