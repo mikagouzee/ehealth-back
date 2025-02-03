@@ -3,8 +3,10 @@ package com.example.demo.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,8 @@ import com.example.demo.repository.AppointmentRepository;
 
 @RestController
 @RequestMapping("/appointment")
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3000/*"}, maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:5164", "http://localhost:5164/*"}, maxAge = 3600)
+// modification by Is
 public class AppointmentController {
 
 		@Autowired
@@ -56,18 +59,18 @@ public class AppointmentController {
 		}
 		
 		@PostMapping("/confirm")
-		public ResponseEntity<Appointment> ConfirmAppointment(@RequestBody AppointmentConfirmationRequest request) {
-			Appointment toConfirm = _appointmentRepository.findById(request.appointmentId).get();
-			if(toConfirm != null){
-				toConfirm.isConfirmed = true;
-				var confirmed = _appointmentRepository.save(toConfirm);
-				return ResponseEntity.ok(confirmed);
-			}
-			else {
-				return "No appointment found.";
-			}
-			
-		}
+	    public ResponseEntity<?> ConfirmAppointment(@RequestBody AppointmentConfirmationRequest request) {
+	        Optional<Appointment> optionalAppointment = _appointmentRepository.findById(request.appointmentId);
+
+	        if (optionalAppointment.isPresent()) {
+	            Appointment toConfirm = optionalAppointment.get();
+	            toConfirm.isConfirmed = true;
+	            Appointment confirmed = _appointmentRepository.save(toConfirm);
+	            return ResponseEntity.ok(confirmed);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No appointment found.");
+	        }
+	    }
 		
 		@PostMapping("/bill")
 		public String BillAppointment(int appointmentId) {
