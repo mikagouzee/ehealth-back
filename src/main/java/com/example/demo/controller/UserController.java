@@ -25,7 +25,7 @@ import com.example.demo.repository.UserRepository;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3000/login"}, maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:5164/*"}, maxAge = 3600)
 public class UserController {
 
 		@Autowired
