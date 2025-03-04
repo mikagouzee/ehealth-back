@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        maven "MAVEN"
+    }
 
     // parameters {
     //     string(name: 'TARGET_USER', defaultValue: 'user', description: 'SSH User for the target machine')
@@ -20,7 +23,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean package -Dmaven.test.skip'
+                sh 'mvn -B -DskipTests clean package' 
             }
         }
 
