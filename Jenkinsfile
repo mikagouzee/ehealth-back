@@ -9,10 +9,15 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
-        stage('Static Analysis') {
+        stage('PMD') {
             steps {
                 // recordIssues sourceCodeRetention: 'LAST_BUILD', tools: [pmdParser(), checkStyle(), findBugs()]
                 sh 'mvn pmd:pmd'
+            }
+        }
+        stage('PMD') {
+            steps {
+                sh 'mvn checkstyle:checkstyle'
             }
         }
     }
