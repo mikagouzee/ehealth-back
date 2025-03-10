@@ -11,11 +11,10 @@ pipeline {
         }
         stage('PMD') {
             steps {
-                // recordIssues sourceCodeRetention: 'LAST_BUILD', tools: [pmdParser(), checkStyle(), findBugs()]
                 sh 'mvn pmd:pmd'
             }
         }
-        stage('PMD') {
+        stage('checkstyle') {
             steps {
                 sh 'mvn checkstyle:checkstyle'
             }
