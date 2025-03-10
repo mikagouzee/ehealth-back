@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'server-developement' }
     tools {
         maven "MAVEN"
     }
@@ -15,11 +15,11 @@ pipeline {
     // }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/mikagouzee/ehealth-back.git', branch: 'master'
-            }
-        }
+    // stage('Checkout') {
+    //     steps {
+    //         git url: 'https://gitlab.com/jenkins5523910/Ehealth_backend_package_dev.git', branch: 'main'
+    //     }
+    //}
 
         stage('Build') {
             steps {
@@ -36,8 +36,13 @@ pipeline {
         //         '''
         //     }
         // }
-    }
 
+        stage('Static Analysis') {
+            steps {
+                recordIssues sourceCodeRetention: 'LAST_BUILD', tools: [pmdParser(), checkStyle(), findBugs()]
+            }
+        }
+    }
     post {
         success {
             echo 'Deployment successful!'
@@ -45,5 +50,6 @@ pipeline {
         failure {
             echo 'Deployment failed!'
         }
+
     }
 }
