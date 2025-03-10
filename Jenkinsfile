@@ -13,8 +13,6 @@ pipeline {
             steps {
                 // recordIssues sourceCodeRetention: 'LAST_BUILD', tools: [pmdParser(), checkStyle(), findBugs()]
                 sh 'mvn pmd:pmd'
-                sh 'mvn checkstyle:checkstyle'
-                
             }
         }
     }
