@@ -7,7 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.1</version>
-        <relativePath />
+        <relativePath/>
     </parent>
     <groupId>com.example</groupId>
     <artifactId>CrudOperation</artifactId>
@@ -31,8 +31,6 @@
         <java.version>17</java.version>
         <pmd.version>6.37.0</pmd.version>
     </properties>
-
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -113,6 +111,21 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Plugin SpotBugs-->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.9.2.0</version>
+                <dependencies>
+                    <!-- overwrite dependency on spotbugs if you want to specify the version of
+                    spotbugs -->
+                    <dependency>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs</artifactId>
+                        <version>4.9.2</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
