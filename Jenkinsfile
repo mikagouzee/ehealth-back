@@ -4,12 +4,6 @@ pipeline {
         maven "MAVEN"
     }
 
-    // parameters {
-    //     string(name: 'TARGET_USER', defaultValue: 'user', description: 'SSH User for the target machine')
-    //     string(name: 'TARGET_IP', defaultValue: '0.0.0.0', description: 'IP Address of the target machine')
-    //     string(name: 'TARGET_DIR', defaultValue: '/path/to/deployment/directory', description: 'Deployment directory on the target machine')
-    // }
-
     // environment {
     //     TARGET_MACHINE = "${params.TARGET_USER}@${params.TARGET_IP}"
     // }
@@ -39,8 +33,6 @@ pipeline {
 
         stage('Static Analysis') {
             steps {
-                //recordIssues sourceCodeRetention: 'LAST_BUILD', 
-                //tools: [pmdParser(pattern: '/target/pmd-report.xml'), checkStyle(pattern: '/target/checkstyle-result.xml'), findBugs(pattern: '/target/findbugs.xml')]
                 sh 'mvn pmd:pmd'
 
             recordIssues(
@@ -61,15 +53,38 @@ pipeline {
             }
         }
 
-    }
-    
-    post {
-        success {
-            echo 'Deployment successful!'
+        stage('git push') {
+            steps {
+                withCredentials([
+                    gitUsernamePassword(credentialsId: 'GitlabPasswordUser', gitToolName: 'Default')
+                    ]) {
+                        sh '''
+                            # modify some file
+                            rm -rf Artifacts_jenkins_backend
+                            git clone https://gitlab.com/jenkins5523910/Artifacts_jenkins_backend.git
+                            cd Artifacts_jenkins_backend
+                            git checkout main
+                            pwd
+                            cp ../target/*.war .
+                            ls -la
+                            git add .
+                            git config --global user.email "sebastien.maffeis@gmail.com"
+                            git config --global user.name "sebastien.maffeis"
+                            git commit -m "New artifact"
+                            git push -u origin main
+                        '''
+                    }
+            }
         }
+    }
+
+    post {
         failure {
             echo 'Deployment failed!'
         }
 
+        success {
+            echo 'Deployment successful!'
+        }
     }
 }
