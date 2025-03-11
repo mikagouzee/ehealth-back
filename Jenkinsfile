@@ -39,7 +39,8 @@ pipeline {
 
         stage('Static Analysis') {
             steps {
-                recordIssues sourceCodeRetention: 'LAST_BUILD', tools: [pmdParser(), checkStyle(), findBugs()]
+                recordIssues sourceCodeRetention: 'LAST_BUILD', 
+                tools: [pmdParser(pattern: '**/pmd-report.xml'), checkStyle(pattern: '**/checkstyle-result.xml'), findBugs('**/findbugs.xml')]
             }
         }
     }
