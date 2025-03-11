@@ -39,11 +39,30 @@ pipeline {
 
         stage('Static Analysis') {
             steps {
-                recordIssues sourceCodeRetention: 'LAST_BUILD', 
-                tools: [pmdParser(pattern: '**/pmd-report.xml'), checkStyle(pattern: '**/checkstyle-result.xml'), findBugs('**/findbugs.xml')]
+                //recordIssues sourceCodeRetention: 'LAST_BUILD', 
+                //tools: [pmdParser(pattern: '/target/pmd-report.xml'), checkStyle(pattern: '/target/checkstyle-result.xml'), findBugs(pattern: '/target/findbugs.xml')]
+                sh 'mvn pmd:pmd'
+
+            recordIssues(
+                tools: [
+                    pmdParser(pattern: 'target/pmd.xml')
+                ]
+            )
             }
         }
+        stage('Errors report') {
+            steps {
+                emailext(
+                    body: 'Errors_report',
+                    subject: 'Errors_report',
+                    to: 'emailextjenkins@gmail.com',
+                    attachmentsPattern: '**/target/pmd.xml'
+                )
+            }
+        }
+
     }
+    
     post {
         success {
             echo 'Deployment successful!'
