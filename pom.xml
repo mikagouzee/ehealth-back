@@ -14,6 +14,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>CrudOperation</name>
     <description>Spring boot Crud operation</description>
+    <packaging>war</packaging>
     <url />
     <licenses>
         <license />
