@@ -6,27 +6,6 @@ pipeline {
 
 
     stages {
-        stage('Static Analysis') {
-            steps {
-                sh 'mvn pmd:pmd'
-
-            recordIssues(
-                tools: [
-                    pmdParser(pattern: 'target/pmd.xml')
-                ]
-            )
-            }
-        }
-        stage('Errors report') {
-            steps {
-                emailext(
-                    body: 'Errors_report',
-                    subject: 'Errors_report',
-                    to: 'emailextjenkins@gmail.com',
-                    attachmentsPattern: '**/target/pmd.xml'
-                )
-            }
-        }
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package' 
