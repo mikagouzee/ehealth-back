@@ -20,7 +20,8 @@ pipeline {
                             rm -rf 'Artifacts_jenkins_backend'
                             git clone https://gitlab.com/jenkins5523910/Artifacts_jenkins_backend.git
                             cd Artifacts_jenkins_backend
-                            git add ../target/*.war
+                            cp ../target/*.war .
+                            git add .
                             git commit -m "New artifact $(date '+%Y-%m-%d -%H:%M')"
                             git push
                             rm -rf 'Artifacts_jenkins_backend'
