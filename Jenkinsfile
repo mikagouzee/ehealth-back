@@ -17,11 +17,13 @@ pipeline {
                     gitUsernamePassword(credentialsId: 'GitlabPasswordUser', gitToolName: 'Default')
                     ]) {
                         sh '''
+                            rm -rf 'Artifacts_jenkins_backend'
                             git clone https://gitlab.com/jenkins5523910/Artifacts_jenkins_backend.git
                             cd Artifacts_jenkins_backend
                             git add ../target/*.war
                             git commit -m "New artifact $(date '+%Y-%m-%d -%H:%M')"
                             git push
+                            rm -rf 'Artifacts_jenkins_backend'
                         '''
                     }
             }
