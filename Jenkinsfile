@@ -6,6 +6,11 @@ pipeline {
 
 
     stages {
+        stage('Prep'){
+            steps{
+                sh 'ls -l'
+            }
+        }
         stage('Scan'){
             steps{
                 withSonarQubeEnv(installationName: 'Sonarqube_on_Target1'){
