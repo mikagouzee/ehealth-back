@@ -4,7 +4,6 @@ pipeline {
         maven "MAVEN"
     }
 
-
     stages {
         stage('Prep'){
             steps{
@@ -12,9 +11,14 @@ pipeline {
             }
         }
         stage('Scan'){
+            // steps{
+            //     sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
+            //     sh 'mvn sonar:sonar'
+            // }
             steps{
-                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
-                sh 'mvn sonar:sonar'
+                withSonarQubeEnv('Sonarqube_on_Target1'){
+                    sh 'mvn sonar:sonar'
+                }
             }
         }
         stage('Quality Gate'){
