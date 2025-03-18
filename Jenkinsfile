@@ -11,10 +11,6 @@ pipeline {
             }
         }
         stage('Scan'){
-            // steps{
-            //     sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install'
-            //     sh 'mvn sonar:sonar'
-            // }
             steps{
                 withSonarQubeEnv('Sonarqube_on_Target1'){
                     sh 'mvn sonar:sonar'
