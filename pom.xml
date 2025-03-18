@@ -22,12 +22,6 @@
     <developers>
         <developer />
     </developers>
-    <scm>
-        <connection />
-        <developerConnection />
-        <tag />
-        <url />
-    </scm>
     <properties>
         <sonar.host.url>http://172.16.1.51:9000</sonar.host.url>
         <sonar.login>sqa_19792e6d6b346ac590cd39131ba1516e4ef60d2b</sonar.login>
