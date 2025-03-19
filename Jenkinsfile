@@ -7,6 +7,7 @@ pipeline {
     stages {
         stage('Prep'){
             steps{
+                sh 'echo "this is the start of the pipeline"'
                 sh 'ls -l'
             }
         }
